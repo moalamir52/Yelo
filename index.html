@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Yelo rent Cars Business Bay</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" />
+  <link href="css/styles.css" rel="stylesheet" />
+  <style>
+    .custom-btn {
+      display: inline-block;
+      background-color: #ffd600;
+      color: #6a1b9a;
+      padding: 15px 30px;
+      font-size: 40px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .custom-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+    }
+
+    .portfolio-card {
+      margin: 20px;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background-color: #fff;
+      transition: transform 0.2s;
+    }
+
+    .portfolio-card:hover {
+      transform: scale(1.03);
+    }
+
+    .portfolio-card img {
+      border-radius: 15px;
+      width: 100%;
+      height: auto;
+    }
+
+    header.masthead {
+      padding: 60px 0; /* تقليل ارتفاع الهيدر */
+    }
+  </style>
+</head>
+<body id="page-top">
+
+  <!-- Navigation -->
+  <a class="menu-toggle rounded" href="#"><i class="fas fa-bars"></i></a>
+  <nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand"><a href="#page-top">Mohamed Alamir</a></li>
+      <li class="sidebar-nav-item"><a href="#page-top">Home</a></li>
+      <li class="sidebar-nav-item"><a href="#portfolio">Main Section</a></li>
+      <li class="sidebar-nav-item"><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header class="masthead d-flex align-items-center">
+    <div class="container px-4 px-lg-5 text-center">
+      <button class="custom-btn" onclick="scrollToPortfolio()">Start From Here</button>
+    </div>
+  </header>
+
+  <!-- Portfolio Section -->
+  <section class="content-section" id="portfolio">
+    <div class="container px-4 px-lg-5">
+      <div class="row justify-content-center">
+        <div class="col-md-5 portfolio-card">
+          <a href="#contracts">
+            <img src="assets/img/Business Bay Contracts.jpg" alt="Business Bay Contracts" />
+          </a>
+        </div>
+        <div class="col-md-5 portfolio-card">
+          <a href="#maintenance">
+            <img src="assets/img/Cars Maintenance.jpg" alt="Cars Maintenance" />
+          </a>
+        </div>
+        <div class="col-md-5 portfolio-card">
+          <a href="#reports">
+            <img src="assets/img/Reports.jpg" alt="Reports" />
+          </a>
+        </div>
+        <div class="col-md-5 portfolio-card">
+          <a href="#done">
+            <img src="assets/img/Maintenance Done.jpg" alt="Maintenance Done" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <div class="map" id="contact">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3610.5008778999018!2d55.26266812407037!3d25.186325832139893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f69b4df276c75%3A0x9dc2da4dd1a0a797!2sThe%20Regal%20Tower!5e0!3m2!1sar!2sae!4v1747455116340!5m2!1sar!2sae" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <br />
+    <small>
+      <a href="https://www.google.com/maps/place/YELO+Car+Rental+Muscat+Airport/" target="_blank">
+        View larger map
+      </a>
+    </small>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container px-4 px-lg-5">
+      <ul class="list-inline mb-5">
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white mr-3" href="#!"><i class="icon-social-facebook"></i></a>
+        </li>
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white mr-3" href="#!"><i class="icon-social-twitter"></i></a>
+        </li>
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white" href="#!"><i class="icon-social-github"></i></a>
+        </li>
+      </ul>
+      <p class="text-muted small mb-0">Copyright to Mohamed Alamir 2025</p>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+
+  <!-- Smooth Scroll Script -->
+  <script>
+    function scrollToPortfolio() {
+      document.getElementById("portfolio").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  </script>
+</body>
+</html>
