@@ -2,4 +2,6 @@ git init
 git remote add origin https://github.com/moalamir52/Yelo.git
 git add .
 git commit -m "Initial commit"
+git pull origin main --rebase
+
 git push -u origin main
