@@ -77,6 +77,46 @@
   <section class="content-section" id="dashboard">
     <div class="container px-4 px-lg-5">
       <div class="row justify-content-center">
+	  <style>
+  @keyframes popIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .reminder-card {
+    background-color: #fdd835; /* أصفر أغمق */
+    color: #4a148c;
+    padding: 24px 36px;
+    border-radius: 18px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    border: 2px solid #6a1b9a; /* إطار بنفسجي */
+    box-shadow: 0 6px 18px rgba(106, 27, 154, 0.5); /* ظل بنفسجي */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: popIn 0.5s ease;
+  }
+
+  .reminder-card:hover {
+    transform: scale(1.05);
+  }
+</style>
+
+<div style="display: flex; justify-content: center; margin-bottom: 30px;">
+  <div
+    class="reminder-card"
+    onclick="window.location.href='https://moalamir52.github.io/indebt/'"
+  >
+    📢 Reminder - Indebt Paid
+  </div>
+</div>
+
 
         <!-- ✅ Business Bay Contracts Card -->
         <div class="col-md-5 portfolio-card">
