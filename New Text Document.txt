@@ -5,3 +5,8 @@ git commit -m "Initial commit"
 git pull origin main --rebase
 
 git push -u origin main
+
+
+
+
+git config --global --add safe.directory D:/project/Yelo
