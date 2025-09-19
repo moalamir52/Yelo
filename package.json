@@ -1,0 +1,19 @@
+{
+  "name": "yelo-dashboard",
+  "version": "1.0.0",
+  "description": "YELO Dashboard - نظام إدارة متكامل",
+  "main": "index.html",
+  "scripts": {
+    "deploy": "gh-pages -d .",
+    "start": "python -m http.server 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/USERNAME/yelo-dashboard.git"
+  },
+  "author": "Mohamed Alamir",
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
