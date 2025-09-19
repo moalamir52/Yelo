@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YELO Dashboard - Redirecting</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #6a1b9a 0%, #ffd600 100%);
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    h1 { margin: 0 0 10px; }
+    p { margin: 5px 0; opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="spinner"></div>
+    <h1>YELO Dashboard</h1>
+    <p>Redirecting to live version...</p>
+    <p>Please wait</p>
+  </div>
+  
+  <script>
+    // إعادة التوجيه الفوري إلى Firebase
+    setTimeout(() => {
+      window.location.replace('https://yelo-dashboard.web.app/');
+    }, 3000);
+  </script>
+</body>
+</html>

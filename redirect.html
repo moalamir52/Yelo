@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YELO - Redirecting...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6a1b9a 0%, #ffd600 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: white;
+    }
+
+    .redirect-container {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .logo {
+      font-size: 72px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    .message {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top: 6px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 30px;
+    }
+
+    .info {
+      font-size: 16px;
+      opacity: 0.8;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .manual-link {
+      margin-top: 30px;
+      padding: 15px 30px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      border-radius: 10px;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .manual-link:hover {
+      background: white;
+      color: #6a1b9a;
+    }
+  </style>
+</head>
+<body>
+  <div class="redirect-container">
+    <div class="logo">YELO</div>
+    <div class="message">Redirecting to Live Version...</div>
+    <div class="spinner"></div>
+    <div class="info">
+      You're being redirected to the live Firebase version for faster updates and real-time features.
+      <br><br>
+      <strong>Live URL:</strong> https://yelo-dashboard.firebaseapp.com/
+    </div>
+    <a href="https://yelo-dashboard.firebaseapp.com/" class="manual-link">
+      Continue Manually
+    </a>
+  </div>
+
+  <script>
+    // Auto redirect after 3 seconds
+    setTimeout(() => {
+      window.location.href = 'https://yelo-dashboard.firebaseapp.com/';
+    }, 3000);
+
+    // Immediate redirect if user clicks anywhere
+    document.addEventListener('click', () => {
+      window.location.href = 'https://yelo-dashboard.firebaseapp.com/';
+    });
+  </script>
+</body>
+</html>
