@@ -1,0 +1,25 @@
+{
+  "cars": {
+    "ABC123": {
+      "class": "Economy",
+      "manufacturer": "Toyota",
+      "model": "Corolla",
+      "year": "2023",
+      "plateNo": "ABC123"
+    },
+    "XYZ789": {
+      "class": "Luxury",
+      "manufacturer": "Mercedes-Benz",
+      "model": "C-Class",
+      "year": "2024",
+      "plateNo": "XYZ789"
+    },
+    "DEF456": {
+      "class": "SUV",
+      "manufacturer": "Nissan",
+      "model": "Patrol",
+      "year": "2023",
+      "plateNo": "DEF456"
+    }
+  }
+}

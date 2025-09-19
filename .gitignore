@@ -1,20 +1,33 @@
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
-*.rar
+# Firebase Configuration Files
+firebase-config.js
+.env
+.env.local
+.env.production
+
+# Security Files
+secrets/
+auth/
+admin-config.js
+
+# Node modules
+node_modules/
+
+# Build files
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Admin Panel - YELO System</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .admin-header {
+      background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 100%);
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 100%);
+      color: white;
+      border-radius: 15px 15px 0 0 !important;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 100%);
+      border: none;
+      border-radius: 10px;
+    }
+
+    .btn-danger {
+      border-radius: 10px;
+    }
+
+    .btn-success {
+      border-radius: 10px;
+    }
+
+    .form-control {
+      border-radius: 10px;
+      border: 2px solid #e0e0e0;
+    }
+
+    .form-control:focus {
+      border-color: #6a1b9a;
+      box-shadow: 0 0 0 0.2rem rgba(106, 27, 154, 0.25);
+    }
+
+    .table {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .activity-item {
+      padding: 10px;
+      border-left: 4px solid #6a1b9a;
+      margin-bottom: 10px;
+      background: white;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <a href="index.html" class="btn btn-secondary back-btn">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+
+  <!-- Page Header -->
+  <div class="admin-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-12 text-center">
+          <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+          <p class="mb-2">User Management and Activity Monitoring</p>
+          <span id="adminName" class="badge bg-warning text-dark fs-6">Administrator</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- إحصائيات سريعة -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-users fa-2x text-primary mb-2"></i>
+            <h5 id="totalUsers">0</h5>
+            <small class="text-muted">Total Users</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-sign-in-alt fa-2x text-success mb-2"></i>
+            <h5 id="activeUsers">0</h5>
+            <small class="text-muted">Active Users</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-chart-line fa-2x text-info mb-2"></i>
+            <h5 id="totalActivities">0</h5>
+            <small class="text-muted">Total Activities</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <i class="fas fa-project-diagram fa-2x text-warning mb-2"></i>
+            <h5>7</h5>
+            <small class="text-muted">Active Projects</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- User Management -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-user-plus"></i> Add New User
+          </div>
+          <div class="card-body">
+            <form id="addUserForm">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="newUsername" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" id="newPassword" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <select class="form-control" id="newRole">
+                  <option value="user">Regular User</option>
+                  <option value="admin">Administrator</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Allowed Projects</label>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="operations" id="perm_operations">
+                      <label class="form-check-label" for="perm_operations">Operations Portal</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="contracts" id="perm_contracts">
+                      <label class="form-check-label" for="perm_contracts">Contracts</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="maintenance" id="perm_maintenance">
+                      <label class="form-check-label" for="perm_maintenance">Maintenance</label>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="reports" id="perm_reports">
+                      <label class="form-check-label" for="perm_reports">Reports</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="staff" id="perm_staff">
+                      <label class="form-check-label" for="perm_staff">Staff</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="summary" id="perm_summary">
+                      <label class="form-check-label" for="perm_summary">Summary</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" type="checkbox" value="all" id="perm_all">
+                  <label class="form-check-label" for="perm_all"><strong>All Projects</strong></label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="fas fa-plus"></i> Add User
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users List -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-users"></i> Registered Users
+          </div>
+          <div class="card-body">
+            <div id="usersList">
+              <!-- Users list will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Log -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-history"></i> Activity Log</span>
+            <button class="btn btn-sm btn-outline-light" onclick="refreshActivities()">
+              <i class="fas fa-refresh"></i> Refresh
+            </button>
+          </div>
+          <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+            <div id="activitiesList">
+              <!-- Activities will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/admin-helper.js"></script>
+  <script>
+    // Check admin permissions
+    document.addEventListener('DOMContentLoaded', function() {
+      const authData = JSON.parse(localStorage.getItem('yelo_auth') || '{}');
+      if (!authData.user || authData.user.role !== 'admin') {
+        alert('You do not have permission to access this page');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      document.getElementById('adminName').textContent = authData.user.username;
+      loadUsers();
+      loadActivities();
+      updateStats();
+    });
+
+    // Add new user
+    document.getElementById('addUserForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('newUsername').value;
+      const password = document.getElementById('newPassword').value;
+      const role = document.getElementById('newRole').value;
+      
+      // Collect permissions
+      const permissions = [];
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      checkboxes.forEach(cb => permissions.push(cb.value));
+      
+      if (permissions.includes('all')) {
+        permissions.length = 0;
+        permissions.push('all');
+      }
+      
+      // Save user (temporarily in localStorage)
+      const users = JSON.parse(localStorage.getItem('yelo_users') || '[]');
+      
+      // Check if username already exists
+      if (users.find(u => u.username === username)) {
+        alert('Username already exists');
+        return;
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        username: username,
+        password: password, // في التطبيق الحقيقي سيتم تشفيرها
+        role: role,
+        permissions: permissions,
+        createdAt: new Date().toISOString(),
+        isActive: true
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('yelo_users', JSON.stringify(users));
+      
+      // Log activity
+      logActivity('admin', 'user_created', `Created new user: ${username}`);
+      
+      // Reload the list
+      loadUsers();
+      updateStats();
+      
+      // Clear the form
+      document.getElementById('addUserForm').reset();
+      
+      alert('User added successfully');
+    });
+
+    // Load users list
+    function loadUsers() {
+      const users = JSON.parse(localStorage.getItem('yelo_users') || '[]');
+      const usersList = document.getElementById('usersList');
+      
+      if (users.length === 0) {
+        usersList.innerHTML = '<p class="text-muted text-center">No registered users</p>';
+        return;
+      }
+      
+      let html = '';
+      users.forEach(user => {
+        const permissionsText = user.permissions.includes('all') ? 'All Projects' : user.permissions.join(', ');
+        const statusBadge = user.isActive ? 
+          '<span class="badge bg-success">Active</span>' : 
+          '<span class="badge bg-danger">Disabled</span>';
+        
+        html += `
+          <div class="border rounded p-3 mb-2">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-1">${user.username} ${statusBadge}</h6>
+                <small class="text-muted">Role: ${user.role === 'admin' ? 'Administrator' : 'User'}</small><br>
+                <small class="text-muted">Permissions: ${permissionsText}</small>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-outline-warning" onclick="toggleUserStatus(${user.id})">
+                  <i class="fas fa-${user.isActive ? 'ban' : 'check'}"></i>
+                </button>
+                <button class="btn btn-outline-danger" onclick="deleteUser(${user.id})">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      usersList.innerHTML = html;
+    }
+
+    // Load activities
+    function loadActivities() {
+      const activities = JSON.parse(localStorage.getItem('yelo_activities') || '[]').reverse(); // Newest first
+      const activitiesList = document.getElementById('activitiesList');
+      
+      if (activities.length === 0) {
+        activitiesList.innerHTML = '<p class="text-muted text-center">No activities recorded</p>';
+        return;
+      }
+      
+      let html = '';
+      activities.slice(0, 20).forEach(activity => { // Last 20 activities
+        const date = new Date(activity.timestamp).toLocaleString('ar-EG');
+        html += `
+          <div class="activity-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>${activity.user}</strong> - ${activity.details}
+              </div>
+              <small class="text-muted">${date}</small>
+            </div>
+          </div>
+        `;
+      });
+      
+      activitiesList.innerHTML = html;
+    }
+
+    // Update statistics
+    function updateStats() {
+      const users = JSON.parse(localStorage.getItem('yelo_users') || '[]');
+      const activities = JSON.parse(localStorage.getItem('yelo_activities') || '[]');
+      
+      document.getElementById('totalUsers').textContent = users.length;
+      document.getElementById('activeUsers').textContent = users.filter(u => u.isActive).length;
+      document.getElementById('totalActivities').textContent = activities.length;
+    }
+
+    // Toggle user status
+    function toggleUserStatus(userId) {
+      const users = JSON.parse(localStorage.getItem('yelo_users') || '[]');
+      const user = users.find(u => u.id === userId);
+      
+      if (user) {
+        user.isActive = !user.isActive;
+        localStorage.setItem('yelo_users', JSON.stringify(users));
+        
+        logActivity('admin', 'user_status_changed', 
+          `User ${user.username} ${user.isActive ? 'activated' : 'deactivated'}`);
+        
+        loadUsers();
+        updateStats();
+      }
+    }
+
+    // Delete user
+    function deleteUser(userId) {
+      if (!confirm('Are you sure you want to delete this user?')) return;
+      
+      const users = JSON.parse(localStorage.getItem('yelo_users') || '[]');
+      const userIndex = users.findIndex(u => u.id === userId);
+      
+      if (userIndex !== -1) {
+        const deletedUser = users[userIndex];
+        users.splice(userIndex, 1);
+        localStorage.setItem('yelo_users', JSON.stringify(users));
+        
+        logActivity('admin', 'user_deleted', `Deleted user: ${deletedUser.username}`);
+        
+        loadUsers();
+        updateStats();
+      }
+    }
+
+    // Refresh activities
+    function refreshActivities() {
+      loadActivities();
+    }
+
+    // Control "All Projects" checkbox
+    document.getElementById('perm_all').addEventListener('change', function() {
+      const otherCheckboxes = document.querySelectorAll('input[type="checkbox"]:not(#perm_all)');
+      if (this.checked) {
+        otherCheckboxes.forEach(cb => {
+          cb.checked = false;
+          cb.disabled = true;
+        });
+      } else {
+        otherCheckboxes.forEach(cb => cb.disabled = false);
+      }
+    });
+  </script>
+</body>
+</html>
