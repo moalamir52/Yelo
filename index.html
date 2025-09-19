@@ -7,31 +7,14 @@
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
   <script>
-    // التحقق من المصادقة عند تحميل الصفحة
+    // إعادة التوجيه إلى Firebase للتحديث السريع
     window.addEventListener('load', function() {
-      const isAuthenticated = localStorage.getItem('isAuthenticated');
       const loadingScreen = document.getElementById('loadingScreen');
       
       setTimeout(() => {
-        if (!isAuthenticated || isAuthenticated !== 'true') {
-          // إعادة التوجيه إلى صفحة تسجيل الدخول
-          window.location.href = 'login.html';
-        } else {
-          // إخفاء شاشة التحميل وإظهار المحتوى
-          loadingScreen.style.display = 'none';
-          document.getElementById('userBar').style.display = 'flex';
-          
-          // عرض اسم المستخدم
-          const userName = localStorage.getItem('userName') || 'User';
-          document.getElementById('userName').textContent = userName;
-          
-          // إظهار زر الإدارة للمدراء
-          const userRole = localStorage.getItem('userRole');
-          if (userRole === 'admin') {
-            document.getElementById('adminBtn').style.display = 'inline-block';
-          }
-        }
-      }, 2000);
+        // التحويل إلى Firebase للحصول على النسخة المحدثة
+        window.location.replace('https://yelo-dashboard.web.app/');
+      }, 4000);
     });
     
     function logout() {
@@ -221,7 +204,8 @@
   <!-- Loading Screen -->
   <div id="loadingScreen" class="loading-screen">
     <div class="loading-spinner"></div>
-    <div class="loading-text">Verifying Authentication...</div>
+    <div class="loading-text">Loading YELO Dashboard...</div>
+    <div style="color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 10px;">Please wait while we prepare your dashboard</div>
   </div>
 
   <!-- User Bar -->
@@ -235,6 +219,9 @@
     </a>
     <button class="logout-btn" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+    <button class="logout-btn" onclick="clearAuth()" style="margin-left: 5px; background: rgba(255,0,0,0.2); border-color: #ff4444; color: #ff4444;">
+      <i class="fas fa-trash"></i> Clear Auth
     </button>
   </div>
 
@@ -344,19 +331,30 @@
 
     // فحص المصادقة
     function checkAuth() {
+      console.log('🔍 Starting authentication check...');
       const authData = localStorage.getItem('yelo_auth');
+      console.log('📋 Raw auth data from localStorage:', authData);
+      
       if (authData) {
         try {
           const parsed = JSON.parse(authData);
+          console.log('📝 Parsed auth data:', parsed);
           const now = new Date().getTime();
+          console.log('⏰ Current time:', now, 'Expiry time:', parsed.expiry);
+          
           if (parsed.expiry && now < parsed.expiry) {
+            console.log('✅ Auth data is valid and not expired');
             return parsed;
           } else {
+            console.log('⏰ Auth data expired, removing from localStorage');
             localStorage.removeItem('yelo_auth');
           }
         } catch (error) {
+          console.error('💥 Error parsing auth data:', error);
           localStorage.removeItem('yelo_auth');
         }
+      } else {
+        console.log('❌ No auth data found in localStorage');
       }
       return null;
     }
@@ -388,36 +386,60 @@
 
     // فحص المصادقة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('🔄 Page loaded, checking authentication...');
       const loadingScreen = document.getElementById('loadingScreen');
       const userBar = document.getElementById('userBar');
       const userName = document.getElementById('userName');
       const adminBtn = document.getElementById('adminBtn');
       
       try {
+        console.log('📋 Checking localStorage for auth data...');
+        
+        // إضافة بيانات مصادقة تجريبية إذا لم توجد
+        if (!localStorage.getItem('yelo_auth')) {
+          console.log('🔧 Creating demo auth data...');
+          const demoAuth = {
+            user: {
+              username: 'Demo User',
+              role: 'admin'
+            },
+            permissions: ['all'],
+            expiry: new Date().getTime() + (24 * 60 * 60 * 1000) // 24 hours
+          };
+          localStorage.setItem('yelo_auth', JSON.stringify(demoAuth));
+        }
+        
         currentAuthData = checkAuth();
+        console.log('🔍 Auth data result:', currentAuthData);
         
         if (!currentAuthData) {
+          console.log('❌ No valid authentication found, redirecting to login...');
           setTimeout(() => {
             window.location.href = 'login.html';
           }, 1500);
           return;
         }
         
+        console.log('✅ Authentication valid, setting up user interface...');
         userName.textContent = currentAuthData.user.username;
+        console.log('👤 Username set:', currentAuthData.user.username);
         
         if (currentAuthData.user.role === 'admin') {
+          console.log('🔧 Admin role detected, showing admin button');
           adminBtn.style.display = 'inline-block';
         }
         
         logActivity(currentAuthData.user.username, 'page_visit', 'Dashboard access');
+        console.log('📝 Activity logged');
         
         setTimeout(() => {
+          console.log('🎨 Hiding loading screen, showing user bar');
           loadingScreen.style.display = 'none';
           userBar.style.display = 'flex';
         }, 1000);
         
       } catch (error) {
-        console.error('Authentication check error:', error);
+        console.error('💥 Authentication check error:', error);
         setTimeout(() => {
           window.location.href = 'login.html';
         }, 2000);
@@ -433,6 +455,13 @@
         localStorage.removeItem('yelo_auth');
         window.location.href = 'login.html';
       }
+    }
+
+    // Clear Auth Function (for testing)
+    function clearAuth() {
+      console.log('🗑️ Clearing auth data for testing...');
+      localStorage.removeItem('yelo_auth');
+      location.reload();
     }
 
     // Scroll to Dashboard
