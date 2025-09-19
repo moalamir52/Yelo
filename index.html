@@ -6,6 +6,50 @@
   <title>YELO Dashboard</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <script>
+    // التحقق من المصادقة عند تحميل الصفحة
+    window.addEventListener('load', function() {
+      const isAuthenticated = localStorage.getItem('isAuthenticated');
+      const loadingScreen = document.getElementById('loadingScreen');
+      
+      setTimeout(() => {
+        if (!isAuthenticated || isAuthenticated !== 'true') {
+          // إعادة التوجيه إلى صفحة تسجيل الدخول
+          window.location.href = 'login.html';
+        } else {
+          // إخفاء شاشة التحميل وإظهار المحتوى
+          loadingScreen.style.display = 'none';
+          document.getElementById('userBar').style.display = 'flex';
+          
+          // عرض اسم المستخدم
+          const userName = localStorage.getItem('userName') || 'User';
+          document.getElementById('userName').textContent = userName;
+          
+          // إظهار زر الإدارة للمدراء
+          const userRole = localStorage.getItem('userRole');
+          if (userRole === 'admin') {
+            document.getElementById('adminBtn').style.display = 'inline-block';
+          }
+        }
+      }, 2000);
+    });
+    
+    function logout() {
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
+      window.location.href = 'login.html';
+    }
+    
+    function scrollToDashboard() {
+      document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function checkPermissionAndNavigate(permission, url) {
+      // يمكن إضافة منطق للتحقق من الصلاحيات هنا
+      window.open(url, '_blank');
+    }
+  </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" />
   <link href="css/styles.css" rel="stylesheet" />

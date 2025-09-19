@@ -1,20 +1,18 @@
-# Firebase Configuration Files
-firebase-config.js
-.env
-.env.local
-.env.production
-
-# Security Files
-secrets/
-auth/
-admin-config.js
-
-# Node modules
+# Dependencies
 node_modules/
+npm-debug.log*
+
+# Firebase
+firebase-config.js
+.firebase/
 
 # Build files
 dist/
 build/
+
+# Environment files
+.env
+.env.local
 
 # IDE files
 .vscode/
@@ -26,8 +24,8 @@ Thumbs.db
 
 # Logs
 *.log
-logs/
 
 # Temporary files
 *.tmp
 *.temp
+*.rar
