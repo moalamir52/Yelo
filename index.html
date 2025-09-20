@@ -106,30 +106,40 @@
     }
     
     function checkPermissionAndNavigate(permission, url) {
+      console.log('🔍 Navigation requested:', { permission, url });
+      
       // فحص وجود النظام والمصادقة
       if (!window.authSystem || !window.authSystem.isAuthenticated || !window.authSystem.currentUser) {
+        console.error('❌ Auth system not available or user not authenticated');
         alert('Please login first');
         window.location.replace('login.html');
         return false;
       }
       
+      console.log('✅ Auth system available, user:', window.authSystem.currentUser.username);
+      
       // فحص الصلاحية بدقة
       const hasPermission = window.authSystem.hasPermission(permission);
-      console.log(`Checking permission '${permission}' for user '${window.authSystem.currentUser.username}':`, hasPermission);
-      console.log('User permissions:', window.authSystem.userPermissions);
+      console.log(`🔐 Permission check for '${permission}':`, hasPermission);
+      console.log('👤 User permissions:', window.authSystem.userPermissions);
       
       if (!hasPermission) {
+        console.warn('🚫 Access denied for permission:', permission);
         alert(`Access denied. You don't have permission for: ${permission}`);
         window.authSystem.logActivity(window.authSystem.currentUser.username, 'access_denied', `Access denied for project: ${permission}`);
         return false;
       }
       
-      // Log successful access and open link with protection parameter
+      // Log successful access
+      console.log('✅ Permission granted, navigating to:', url);
       window.authSystem.logActivity(window.authSystem.currentUser.username, 'project_access', `Accessed project: ${permission}`);
       
-      // إضافة معامل الحماية للرابط
+      // إضافة معامل الحماية للرابط والانتقال في نفس النافذة
       const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true';
-      window.open(protectedUrl, '_blank');
+      console.log('🔗 Final URL with protection:', protectedUrl);
+      
+      // الانتقال في نفس النافذة
+      window.location.href = protectedUrl;
       return true;
     }
   </script>

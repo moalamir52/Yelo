@@ -2,15 +2,20 @@
 (function() {
   'use strict';
   
+  console.log('🛡️ YELO Direct Protection System loaded');
+  console.log('🔗 Current URL:', window.location.href);
+  
   // إخفاء المحتوى فوراً حتى يتم التحقق
   document.documentElement.style.display = 'none';
   
   // فحص إذا كان الوصول من خلال نظام الحماية
   const urlParams = new URLSearchParams(window.location.search);
   const isProtected = urlParams.get('protected');
+  console.log('🔍 Protected parameter:', isProtected);
   
   // إذا لم يكن محمي، فحص المصادقة
   if (!isProtected) {
+    console.log('⚠️ No protection parameter found, checking authentication...');
     // مسح أي بيانات demo قديمة فوراً
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userName');
@@ -20,8 +25,10 @@
     
     // فحص المصادقة من YELO فقط
     const authData = localStorage.getItem('yelo_auth');
+    console.log('📋 Auth data from localStorage:', authData ? 'Found' : 'Not found');
     
     if (!authData) {
+      console.error('❌ No auth data found, redirecting to login');
       alert('🚫 Access Denied!\n\nThis project is protected by YELO Security System.\nPlease login through the main dashboard.');
       window.location.replace('https://moalamir52.github.io/Yelo/login.html');
       return;
@@ -41,11 +48,15 @@
       
       // تحديد اسم المشروع من الرابط
       const projectName = getProjectNameFromURL();
+      console.log('📁 Project name detected:', projectName);
+      console.log('👤 User permissions:', parsed.permissions);
       
       // فحص الصلاحية
       const hasPermission = parsed.permissions.includes('all') || parsed.permissions.includes(projectName);
+      console.log('🔐 Permission check result:', hasPermission);
       
       if (!hasPermission) {
+        console.warn('🚫 Access denied for project:', projectName);
         alert(`🚫 Access Denied!\n\nYou don't have permission to access ${projectName.toUpperCase()} project.\n\nContact your administrator for access.`);
         
         // تسجيل محاولة الوصول غير المصرح بها
@@ -64,6 +75,7 @@
       // بدء مراقبة الجلسة المستمرة
       startSessionMonitoring(parsed.user.username, projectName);
       
+      console.log('✅ All checks passed, showing content');
       // إظهار المحتوى بعد التحقق
       document.documentElement.style.display = 'block';
       
@@ -74,6 +86,7 @@
       return;
     }
   } else {
+    console.log('✅ Protected parameter found, showing content directly');
     // إذا كان محمي، إظهار المحتوى
     document.documentElement.style.display = 'block';
   }
