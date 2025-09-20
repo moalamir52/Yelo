@@ -11,7 +11,14 @@
   
   // إذا لم يكن محمي، فحص المصادقة
   if (!isProtected) {
-    // فحص المصادقة من YELO
+    // مسح أي بيانات demo قديمة فوراً
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('demo_user');
+    
+    // فحص المصادقة من YELO فقط
     const authData = localStorage.getItem('yelo_auth');
     
     if (!authData) {
@@ -24,9 +31,9 @@
       const parsed = JSON.parse(authData);
       const now = new Date().getTime();
       
-      // فحص انتهاء الصلاحية
-      if (!parsed.expiry || now >= parsed.expiry || !parsed.user) {
-        localStorage.removeItem('yelo_auth');
+      // فحص انتهاء الصلاحية ومنع demo users
+      if (!parsed.expiry || now >= parsed.expiry || !parsed.user || parsed.user.username === 'demo' || parsed.user.username === 'Demo User') {
+        localStorage.clear(); // مسح كل شيء
         alert('⏰ Session Expired!\n\nYour session has expired. Please login again.');
         window.location.replace('https://moalamir52.github.io/Yelo/login.html');
         return;
