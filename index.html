@@ -106,7 +106,9 @@
     }
     
     function checkPermissionAndNavigate(permission, url) {
+      console.log('=== FUNCTION CALLED ===');
       console.log('🔍 Navigation requested:', { permission, url });
+      alert('Function called: ' + permission);
       
       // فحص وجود النظام والمصادقة
       if (!window.authSystem || !window.authSystem.isAuthenticated || !window.authSystem.currentUser) {
@@ -139,7 +141,10 @@
       console.log('🔗 Final URL with protection:', protectedUrl);
       
       // الانتقال في نفس النافذة
-      window.location.href = protectedUrl;
+      console.log('🚀 About to navigate to:', protectedUrl);
+      setTimeout(() => {
+        window.location.href = protectedUrl;
+      }, 1000);
       return true;
     }
   </script>
