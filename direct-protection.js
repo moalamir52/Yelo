@@ -2,6 +2,9 @@
 (function() {
   'use strict';
   
+  // إخفاء المحتوى فوراً حتى يتم التحقق
+  document.documentElement.style.display = 'none';
+  
   // فحص إذا كان الوصول من خلال نظام الحماية
   const urlParams = new URLSearchParams(window.location.search);
   const isProtected = urlParams.get('protected');
@@ -51,12 +54,18 @@
       // إضافة شريط المستخدم
       addSecurityBar(parsed.user, projectName);
       
+      // إظهار المحتوى بعد التحقق
+      document.documentElement.style.display = 'block';
+      
     } catch (error) {
       localStorage.removeItem('yelo_auth');
       alert('❌ Authentication Error!\n\nThere was an error verifying your credentials.\nPlease login again.');
       window.location.replace('https://moalamir52.github.io/Yelo/login.html');
       return;
     }
+  } else {
+    // إذا كان محمي، إظهار المحتوى
+    document.documentElement.style.display = 'block';
   }
   
   // تحديد اسم المشروع من الرابط
