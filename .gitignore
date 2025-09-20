@@ -1,31 +1,27 @@
-# Dependencies
-node_modules/
-npm-debug.log*
-
-# Firebase
+# ملفات الحماية - لا ترفع على GitHub
 firebase-config.js
-.firebase/
-
-# Build files
-dist/
-build/
-
-# Environment files
 .env
-.env.local
+admin-config.js
 
-# IDE files
-.vscode/
-.idea/
-
-# OS files
+# ملفات النظام
+node_modules/
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
+# ملفات المحرر
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Temporary files
-*.tmp
-*.temp
-*.rar
+# ملفات السيرفر المحلي
+server.js
+package.json
+start.bat
+deploy.bat
+README-SERVER.md
+
+# ملفات تنفيذية (ممنوعة في Firebase)
+*.exe
+*.bat
+*.cmd

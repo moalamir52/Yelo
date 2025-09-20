@@ -147,6 +147,7 @@
     </form>
   </div>
 
+  <script src="js/auth-system.js"></script>
   <script>
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -168,39 +169,19 @@
         // محاكاة تأخير الشبكة
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // التحقق من بيانات الدخول
-        if (username === 'admin' && password === 'admin123') {
-          // حفظ بيانات المصادقة
-          const authData = {
-            user: { username: username, role: 'admin' },
-            permissions: ['all'],
-            expiry: Date.now() + (24 * 60 * 60 * 1000)
-          };
-          
-          localStorage.setItem('yelo_auth', JSON.stringify(authData));
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem('userName', username);
-          localStorage.setItem('userRole', 'admin');
+        // استخدام نظام المصادقة الجديد
+        const result = await window.authSystem.login(username, password);
+        
+        if (result.success) {
+          // مسح أي بيانات قديمة
+          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userRole');
           
           // إعادة التوجيه للوحة الرئيسية
           window.location.href = 'index.html';
-          
-        } else if (username === 'user' && password === 'user123') {
-          const authData = {
-            user: { username: username, role: 'user' },
-            permissions: ['reports', 'contracts'],
-            expiry: Date.now() + (24 * 60 * 60 * 1000)
-          };
-          
-          localStorage.setItem('yelo_auth', JSON.stringify(authData));
-          localStorage.setItem('isAuthenticated', 'true');
-          localStorage.setItem('userName', username);
-          localStorage.setItem('userRole', 'user');
-          
-          window.location.href = 'index.html';
-          
         } else {
-          throw new Error('Invalid username or password');
+          throw new Error(result.message || 'Invalid username or password');
         }
         
       } catch (error) {
@@ -214,8 +195,13 @@
 
     // التحقق من المصادقة الموجودة
     window.addEventListener('load', function() {
-      const isAuth = localStorage.getItem('isAuthenticated');
-      if (isAuth === 'true') {
+      // مسح أي بيانات قديمة فوراً
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
+      
+      // فحص المصادقة الجديدة فقط
+      if (window.authSystem && window.authSystem.checkAuthStatus()) {
         window.location.href = 'index.html';
       }
     });

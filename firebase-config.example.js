@@ -1,15 +1,12 @@
-// مثال على ملف تكوين Firebase
-// انسخ هذا الملف إلى firebase-config.js وأدخل بياناتك الحقيقية
-
+// مثال على إعدادات Firebase - انسخ هذا الملف إلى firebase-config.js وأدخل بياناتك الحقيقية
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
+  apiKey: "your-api-key-here",
   authDomain: "your-project.firebaseapp.com",
   projectId: "your-project-id",
-  storageBucket: "your-project.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  measurementId: "YOUR_MEASUREMENT_ID"
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
 };
 
-// تصدير التكوين
-export default firebaseConfig;
+// تصدير الإعدادات
+window.firebaseConfig = firebaseConfig;

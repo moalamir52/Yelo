@@ -6,21 +6,95 @@
   <title>YELO Dashboard</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <script src="js/auth-system.js"></script>
   <script>
-    // إعادة التوجيه إلى Firebase للتحديث السريع
-    window.addEventListener('load', function() {
-      const loadingScreen = document.getElementById('loadingScreen');
-      
-      setTimeout(() => {
-        // التحويل إلى Firebase للحصول على النسخة المحدثة
-        window.location.replace('https://yelo-dashboard.web.app/');
-      }, 4000);
-    });
-    
-    function logout() {
+    // حماية فورية - منع الوصول بدون مصادقة
+    (function() {
+      // مسح أي بيانات قديمة فوراً
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userName');
       localStorage.removeItem('userRole');
+      
+      // فحص فوري للمصادقة
+      const authData = localStorage.getItem('yelo_auth');
+      if (!authData) {
+        window.location.replace('login.html');
+        return;
+      }
+      
+      try {
+        const parsed = JSON.parse(authData);
+        const now = new Date().getTime();
+        
+        if (!parsed.expiry || now >= parsed.expiry || !parsed.user) {
+          localStorage.removeItem('yelo_auth');
+          window.location.replace('login.html');
+          return;
+        }
+      } catch (error) {
+        localStorage.removeItem('yelo_auth');
+        window.location.replace('login.html');
+        return;
+      }
+    })();
+  </script>
+  <script>
+    // تحقق من المصادقة عند تحميل الصفحة
+    window.addEventListener('load', function() {
+      // مسح جميع البيانات القديمة فوراً
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
+      
+      // فحص وجود نظام المصادقة
+      if (!window.authSystem) {
+        console.error('Auth system not loaded');
+        window.location.replace('login.html');
+        return;
+      }
+      
+      // التحقق من المصادقة - يجب أن يكون المستخدم مسجل دخول
+      if (!window.authSystem.checkAuthStatus() || !window.authSystem.isAuthenticated || !window.authSystem.currentUser) {
+        console.log('User not authenticated, redirecting to login');
+        window.location.replace('login.html');
+        return;
+      }
+      
+      // عرض معلومات المستخدم المصادق عليه فقط
+      const userBar = document.getElementById('userBar');
+      const userName = document.getElementById('userName');
+      const adminBtn = document.getElementById('adminBtn');
+      
+      userName.textContent = window.authSystem.currentUser.username;
+      userBar.style.display = 'flex';
+      
+      // عرض زر الإدارة للأدمن فقط
+      if (window.authSystem.isAdmin()) {
+        adminBtn.style.display = 'inline-block';
+      }
+      
+      // إخفاء شاشة التحميل
+      setTimeout(() => {
+        document.getElementById('loadingScreen').style.display = 'none';
+      }, 1500);
+    });
+    
+    function logout() {
+      // مسح جميع بيانات المصادقة
+      if (window.authSystem) {
+        window.authSystem.logout();
+      }
+      localStorage.removeItem('yelo_auth');
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
+      
+      // إعادة تحميل الصفحة بالكامل
+      window.location.replace('login.html');
+    }
+    
+    function clearAuth() {
+      localStorage.clear();
       window.location.href = 'login.html';
     }
     
@@ -29,8 +103,28 @@
     }
     
     function checkPermissionAndNavigate(permission, url) {
-      // يمكن إضافة منطق للتحقق من الصلاحيات هنا
+      // فحص وجود النظام والمصادقة
+      if (!window.authSystem || !window.authSystem.isAuthenticated || !window.authSystem.currentUser) {
+        alert('Please login first');
+        window.location.replace('login.html');
+        return false;
+      }
+      
+      // فحص الصلاحية بدقة
+      const hasPermission = window.authSystem.hasPermission(permission);
+      console.log(`Checking permission '${permission}' for user '${window.authSystem.currentUser.username}':`, hasPermission);
+      console.log('User permissions:', window.authSystem.userPermissions);
+      
+      if (!hasPermission) {
+        alert(`Access denied. You don't have permission for: ${permission}`);
+        window.authSystem.logActivity(window.authSystem.currentUser.username, 'access_denied', `Access denied for project: ${permission}`);
+        return false;
+      }
+      
+      // Log successful access and open link
+      window.authSystem.logActivity(window.authSystem.currentUser.username, 'project_access', `Accessed project: ${permission}`);
       window.open(url, '_blank');
+      return true;
     }
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
@@ -252,7 +346,7 @@
           <div class="reminder-card" onclick="checkPermissionAndNavigate('operations', 'https://moalamir52.github.io/Operations_Portal/')">
             📢 Operations Portal
           </div>
-          <div class="reminder-card" onclick="checkPermissionAndNavigate('contracts', 'https://moalamir52.github.io/Contract_Matcher/')" style="display: flex; align-items: center; cursor: pointer;">
+          <div class="reminder-card" onclick="checkPermissionAndNavigate('contract-matcher', 'https://moalamir52.github.io/Contract_Matcher/')" style="display: flex; align-items: center; cursor: pointer;">
             📝 Contract Matcher
           </div>
           <div class="reminder-card" onclick="checkPermissionAndNavigate('staff', 'https://moalamir52.github.io/Staff/')" style="display: flex; align-items: center; cursor: pointer;">

@@ -1,19 +1,12 @@
 {
-  "name": "yelo-dashboard",
+  "name": "yelo-auth-system",
   "version": "1.0.0",
-  "description": "YELO Dashboard - نظام إدارة متكامل",
-  "main": "index.html",
+  "description": "YELO Authentication System - Local Server",
+  "main": "server.js",
   "scripts": {
-    "deploy": "gh-pages -d .",
-    "start": "python -m http.server 8000"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/USERNAME/yelo-dashboard.git"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "author": "Mohamed Alamir",
-  "license": "MIT",
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
-  }
+  "license": "MIT"
 }
