@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>YELO Protection Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        h1 { color: #6a1b9a; text-align: center; }
+        .project { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; }
+        .protected { background: #e8f5e8; border-color: #4caf50; }
+        .unprotected { background: #ffebee; border-color: #f44336; }
+        .excluded { background: #fff3e0; border-color: #ff9800; }
+        .status { font-weight: bold; float: right; padding: 5px 10px; border-radius: 15px; color: white; font-size: 12px; }
+        .status.protected { background: #4caf50; }
+        .status.unprotected { background: #f44336; }
+        .status.excluded { background: #ff9800; }
+        .project-name { font-size: 18px; font-weight: bold; margin-bottom: 5px; }
+        .project-url { color: #666; font-size: 14px; }
+        .test-btn { background: #6a1b9a; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .test-btn:hover { background: #5a1a8a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ YELO Protection Status</h1>
+        <p style="text-align: center; color: #666;">Monitor the protection status of all projects</p>
+        
+        <div class="project protected">
+            <div class="project-name">Operations Portal</div>
+            <div class="project-url">https://moalamir52.github.io/Operations/</div>
+            <span class="status protected">✅ PROTECTED</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Operations/')">Test Protection</button>
+        </div>
+        
+        <div class="project unprotected">
+            <div class="project-name">Business Bay Contracts</div>
+            <div class="project-url">https://moalamir52.github.io/Contracts/</div>
+            <span class="status unprotected">❌ NEEDS PROTECTION</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Contracts/')">Test Protection</button>
+        </div>
+        
+        <div class="project unprotected">
+            <div class="project-name">Cars Maintenance</div>
+            <div class="project-url">https://moalamir52.github.io/Maintenance/</div>
+            <span class="status unprotected">❌ NEEDS PROTECTION</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Maintenance/')">Test Protection</button>
+        </div>
+        
+        <div class="project unprotected">
+            <div class="project-name">Car Reports</div>
+            <div class="project-url">https://moalamir52.github.io/Reports/</div>
+            <span class="status unprotected">❌ NEEDS PROTECTION</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Reports/')">Test Protection</button>
+        </div>
+        
+        <div class="project unprotected">
+            <div class="project-name">Staff Status</div>
+            <div class="project-url">https://moalamir52.github.io/Staff/</div>
+            <span class="status unprotected">❌ NEEDS PROTECTION</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Staff/')">Test Protection</button>
+        </div>
+        
+        <div class="project unprotected">
+            <div class="project-name">Maintenance Summary</div>
+            <div class="project-url">https://moalamir52.github.io/Summary/</div>
+            <span class="status unprotected">❌ NEEDS PROTECTION</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/Summary/')">Test Protection</button>
+        </div>
+        
+        <div class="project excluded">
+            <div class="project-name">G Logo</div>
+            <div class="project-url">https://moalamir52.github.io/glogo/</div>
+            <span class="status excluded">⚠️ EXCLUDED</span>
+            <button class="test-btn" onclick="testProject('https://moalamir52.github.io/glogo/')">Test Access</button>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f0f0f0; border-radius: 8px;">
+            <h3>📋 Protection Instructions</h3>
+            <p>To protect a project, add this line in the beginning of its index.html:</p>
+            <code style="background: #333; color: #0f0; padding: 10px; display: block; border-radius: 5px;">
+                &lt;script src="https://moalamir52.github.io/Yelo/direct-protection.js"&gt;&lt;/script&gt;
+            </code>
+        </div>
+    </div>
+    
+    <script>
+        function testProject(url) {
+            window.open(url, '_blank');
+        }
+        
+        // Auto-refresh every 30 seconds
+        setTimeout(() => {
+            window.location.reload();
+        }, 30000);
+    </script>
+</body>
+</html>
