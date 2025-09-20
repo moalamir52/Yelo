@@ -108,7 +108,7 @@
     function checkPermissionAndNavigate(permission, url) {
       console.log('=== FUNCTION CALLED ===');
       console.log('🔍 Navigation requested:', { permission, url });
-      alert('Function called: ' + permission);
+
       
       // فحص وجود النظام والمصادقة
       if (!window.authSystem || !window.authSystem.isAuthenticated || !window.authSystem.currentUser) {
@@ -137,15 +137,13 @@
       window.authSystem.logActivity(window.authSystem.currentUser.username, 'project_access', `Accessed project: ${permission}`);
       
       // إضافة معامل الحماية للرابط والانتقال في نفس النافذة
-      const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true';
+      const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true&t=' + Date.now();
       console.log('🔗 Final URL with protection:', protectedUrl);
       
-      // الانتقال في نفس النافذة
-      console.log('🚀 About to navigate to:', protectedUrl);
+      // تحذير مؤقت للمستخدم
+      alert('⚠️ GitHub Pages يحتاج وقت للتحديث!\n\nسيتم فتح المشروع في نافذة جديدة مؤقتاً');
       
-      alert('⚠️ المشاريع الخارجية تحتاج إضافة نظام الحماية أولاً!\n\nسأقوم بإضافة الحماية لجميع المشاريع الآن.');
-      
-      // مؤقتاً - فتح في نافذة جديدة للاختبار
+      // فتح في نافذة جديدة مؤقتاً
       window.open(protectedUrl, '_blank');
       return true;
     }
