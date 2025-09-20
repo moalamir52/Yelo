@@ -30,7 +30,7 @@
     if (!authData) {
       console.error('❌ No auth data found, redirecting to login');
       alert('🚫 Access Denied!\n\nThis project is protected by YELO Security System.\nPlease login through the main dashboard.');
-      window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+      window.location.replace('https://yelo-dashboard.web.app/login.html');
       return;
     }
     
@@ -42,7 +42,7 @@
       if (!parsed.expiry || now >= parsed.expiry || !parsed.user || parsed.user.username === 'demo' || parsed.user.username === 'Demo User') {
         localStorage.clear(); // مسح كل شيء
         alert('⏰ Session Expired!\n\nYour session has expired. Please login again.');
-        window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+        window.location.replace('https://yelo-dashboard.web.app/login.html');
         return;
       }
       
@@ -62,7 +62,7 @@
         // تسجيل محاولة الوصول غير المصرح بها
         logUnauthorizedAccess(parsed.user.username, projectName);
         
-        window.location.replace('https://moalamir52.github.io/Yelo/');
+        window.location.replace('https://yelo-dashboard.web.app/');
         return;
       }
       
@@ -80,9 +80,10 @@
       document.documentElement.style.display = 'block';
       
     } catch (error) {
+      console.error('❌ Auth parsing error:', error);
       localStorage.removeItem('yelo_auth');
       alert('❌ Authentication Error!\n\nThere was an error verifying your credentials.\nPlease login again.');
-      window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+      window.location.replace('https://yelo-dashboard.web.app/login.html');
       return;
     }
   } else {
@@ -223,7 +224,7 @@
     });
     
     alert(message);
-    window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+    window.location.replace('https://yelo-dashboard.web.app/login.html');
   }
   
   // إضافة شريط الأمان
@@ -253,7 +254,7 @@
           <span>📁 ${projectName.toUpperCase()}</span>
         </div>
         <div style="display: flex; gap: 10px;">
-          <button onclick="window.open('https://moalamir52.github.io/Yelo/', '_blank')" style="
+          <button onclick="window.open('https://yelo-dashboard.web.app/', '_blank')" style="
             background: rgba(255,214,0,0.2);
             border: 1px solid #ffd600;
             color: #ffd600;
@@ -265,7 +266,7 @@
           <button onclick="
             localStorage.removeItem('yelo_auth');
             alert('Logged out successfully!');
-            window.location.href='https://moalamir52.github.io/Yelo/login.html';
+            window.location.href='https://yelo-dashboard.web.app/login.html';
           " style="
             background: rgba(255,0,0,0.2);
             border: 1px solid #ff4444;

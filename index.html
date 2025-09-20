@@ -142,9 +142,11 @@
       
       // الانتقال في نفس النافذة
       console.log('🚀 About to navigate to:', protectedUrl);
-      setTimeout(() => {
-        window.location.href = protectedUrl;
-      }, 1000);
+      
+      alert('⚠️ المشاريع الخارجية تحتاج إضافة نظام الحماية أولاً!\n\nسأقوم بإضافة الحماية لجميع المشاريع الآن.');
+      
+      // مؤقتاً - فتح في نافذة جديدة للاختبار
+      window.open(protectedUrl, '_blank');
       return true;
     }
   </script>
