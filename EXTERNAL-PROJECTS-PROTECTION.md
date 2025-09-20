@@ -57,11 +57,13 @@ checkPermissionAndNavigate('summary', 'https://moalamir52.github.io/Yelo/summary
 
 | المشروع | الرابط المحمي |
 |---------|---------------|
+| Operations | `https://moalamir52.github.io/Yelo/operations-protection.html` |
+| Contracts | `https://moalamir52.github.io/Yelo/contracts-protection.html` |
+| Maintenance | `https://moalamir52.github.io/Yelo/maintenance-protection.html` |
+| Reports | `https://moalamir52.github.io/Yelo/reports-protection.html` |
+| Staff | `https://moalamir52.github.io/Yelo/staff-protection.html` |
 | Summary | `https://moalamir52.github.io/Yelo/summary-protection.html` |
-| Operations | يحتاج حماية |
-| Contracts | يحتاج حماية |
-| Maintenance | يحتاج حماية |
-| Reports | يحتاج حماية |
+| glogo | غير محمي (حسب الطلب) |
 
 ## ⚠️ ملاحظات مهمة
 1. هذه الحماية تعتمد على JavaScript وليست حماية خادم
