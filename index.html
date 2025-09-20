@@ -140,11 +140,11 @@
       const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true&t=' + Date.now();
       console.log('🔗 Final URL with protection:', protectedUrl);
       
-      // تحذير مؤقت للمستخدم
-      alert('⚠️ GitHub Pages يحتاج وقت للتحديث!\n\nسيتم فتح المشروع في نافذة جديدة مؤقتاً');
+      // حل مؤقت - فتح المشاريع بدون حماية
+      alert('⚠️ حل مؤقت: سيتم فتح المشروع بدون حماية\n\nسيتم إصلاح الحماية قريباً');
       
-      // فتح في نافذة جديدة مؤقتاً
-      window.open(protectedUrl, '_blank');
+      // فتح المشروع مباشرة بدون معامل الحماية
+      window.open(url, '_blank');
       return true;
     }
   </script>
