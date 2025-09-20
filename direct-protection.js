@@ -61,6 +61,9 @@
       // إضافة شريط المستخدم
       addSecurityBar(parsed.user, projectName);
       
+      // بدء مراقبة الجلسة المستمرة
+      startSessionMonitoring(parsed.user.username, projectName);
+      
       // إظهار المحتوى بعد التحقق
       document.documentElement.style.display = 'block';
       
@@ -74,6 +77,36 @@
     // إذا كان محمي، إظهار المحتوى
     document.documentElement.style.display = 'block';
   }
+  
+  // مراقبة تغييرات localStorage
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    // منع إضافة بيانات قديمة
+    const blockedKeys = ['isAuthenticated', 'userName', 'userRole', 'demo_user', 'currentUser'];
+    if (blockedKeys.includes(key)) {
+      console.warn('🚫 Blocked attempt to set old auth data:', key);
+      return;
+    }
+    originalSetItem.call(this, key, value);
+  };
+  
+  // مراقبة فقدان التركيز
+  window.addEventListener('blur', function() {
+    // فحص المصادقة عند فقدان التركيز
+    setTimeout(function() {
+      const authData = localStorage.getItem('yelo_auth');
+      if (!authData) {
+        window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+      }
+    }, 1000);
+  });
+  
+  // مراقبة إغلاق النافذة
+  window.addEventListener('beforeunload', function() {
+    // مسح أي بيانات قديمة عند الإغلاق
+    const oldKeys = ['isAuthenticated', 'userName', 'userRole', 'demo_user'];
+    oldKeys.forEach(key => localStorage.removeItem(key));
+  });
   
   // تحديد اسم المشروع من الرابط
   function getProjectNameFromURL() {
@@ -129,6 +162,73 @@
     }
     
     localStorage.setItem('yelo_activities', JSON.stringify(activities));
+  }
+  
+  // مراقبة الجلسة المستمرة
+  function startSessionMonitoring(username, projectName) {
+    // فحص كل 5 ثواني
+    setInterval(function() {
+      const authData = localStorage.getItem('yelo_auth');
+      
+      if (!authData) {
+        forceLogout('❌ Session Lost!\n\nYour authentication was cleared.\nPlease login again.');
+        return;
+      }
+      
+      try {
+        const parsed = JSON.parse(authData);
+        const now = new Date().getTime();
+        
+        // فحص انتهاء الصلاحية
+        if (!parsed.expiry || now >= parsed.expiry || !parsed.user) {
+          forceLogout('⏰ Session Expired!\n\nYour session has expired.\nPlease login again.');
+          return;
+        }
+        
+        // فحص الصلاحية للمشروع
+        const hasPermission = parsed.permissions.includes('all') || parsed.permissions.includes(projectName);
+        if (!hasPermission) {
+          forceLogout('🚫 Permission Revoked!\n\nYour access to this project was revoked.\nContact administrator.');
+          return;
+        }
+        
+        // فحص وجود بيانات قديمة ومسحها
+        const oldData = [
+          'isAuthenticated', 'userName', 'userRole', 'currentUser', 
+          'demo_user', 'user_session', 'auth_token'
+        ];
+        
+        let foundOldData = false;
+        oldData.forEach(key => {
+          if (localStorage.getItem(key)) {
+            localStorage.removeItem(key);
+            foundOldData = true;
+          }
+        });
+        
+        if (foundOldData) {
+          console.log('🧹 Cleaned old authentication data');
+        }
+        
+      } catch (error) {
+        forceLogout('❌ Authentication Error!\n\nCorrupted session data detected.\nPlease login again.');
+      }
+    }, 5000); // كل 5 ثواني
+  }
+  
+  // طرد فوري مع مسح الكاش
+  function forceLogout(message) {
+    // مسح شامل لجميع البيانات
+    localStorage.clear();
+    sessionStorage.clear();
+    
+    // محاولة مسح الكوكيز
+    document.cookie.split(";").forEach(function(c) { 
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+    });
+    
+    alert(message);
+    window.location.replace('https://moalamir52.github.io/Yelo/login.html');
   }
   
   // إضافة شريط الأمان
