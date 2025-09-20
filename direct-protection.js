@@ -90,16 +90,15 @@
     originalSetItem.call(this, key, value);
   };
   
-  // مراقبة فقدان التركيز
-  window.addEventListener('blur', function() {
-    // فحص المصادقة عند فقدان التركيز
-    setTimeout(function() {
-      const authData = localStorage.getItem('yelo_auth');
-      if (!authData) {
-        window.location.replace('https://moalamir52.github.io/Yelo/login.html');
-      }
-    }, 1000);
-  });
+  // مراقبة فقدان التركيز (معطلة مؤقتاً)
+  // window.addEventListener('blur', function() {
+  //   setTimeout(function() {
+  //     const authData = localStorage.getItem('yelo_auth');
+  //     if (!authData) {
+  //       window.location.replace('https://moalamir52.github.io/Yelo/login.html');
+  //     }
+  //   }, 5000);
+  // });
   
   // مراقبة إغلاق النافذة
   window.addEventListener('beforeunload', function() {
@@ -166,54 +165,37 @@
   
   // مراقبة الجلسة المستمرة
   function startSessionMonitoring(username, projectName) {
-    // فحص كل 5 ثواني
+    // فحص كل 30 ثانية (أقل تدخلاً)
     setInterval(function() {
       const authData = localStorage.getItem('yelo_auth');
       
       if (!authData) {
-        forceLogout('❌ Session Lost!\n\nYour authentication was cleared.\nPlease login again.');
-        return;
+        console.warn('No auth data found');
+        return; // لا تطرد فوراً
       }
       
       try {
         const parsed = JSON.parse(authData);
         const now = new Date().getTime();
         
-        // فحص انتهاء الصلاحية
-        if (!parsed.expiry || now >= parsed.expiry || !parsed.user) {
+        // فحص انتهاء الصلاحية فقط
+        if (parsed.expiry && now >= parsed.expiry) {
           forceLogout('⏰ Session Expired!\n\nYour session has expired.\nPlease login again.');
           return;
         }
         
-        // فحص الصلاحية للمشروع
-        const hasPermission = parsed.permissions.includes('all') || parsed.permissions.includes(projectName);
-        if (!hasPermission) {
-          forceLogout('🚫 Permission Revoked!\n\nYour access to this project was revoked.\nContact administrator.');
-          return;
-        }
-        
-        // فحص وجود بيانات قديمة ومسحها
-        const oldData = [
-          'isAuthenticated', 'userName', 'userRole', 'currentUser', 
-          'demo_user', 'user_session', 'auth_token'
-        ];
-        
-        let foundOldData = false;
+        // مسح بيانات قديمة بهدوء
+        const oldData = ['isAuthenticated', 'userName', 'userRole', 'demo_user'];
         oldData.forEach(key => {
           if (localStorage.getItem(key)) {
             localStorage.removeItem(key);
-            foundOldData = true;
           }
         });
         
-        if (foundOldData) {
-          console.log('🧹 Cleaned old authentication data');
-        }
-        
       } catch (error) {
-        forceLogout('❌ Authentication Error!\n\nCorrupted session data detected.\nPlease login again.');
+        console.error('Auth monitoring error:', error);
       }
-    }, 5000); // كل 5 ثواني
+    }, 30000); // كل 30 ثانية
   }
   
   // طرد فوري مع مسح الكاش
