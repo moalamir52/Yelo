@@ -124,9 +124,12 @@
         return false;
       }
       
-      // Log successful access and open link
+      // Log successful access and open link with protection parameter
       window.authSystem.logActivity(window.authSystem.currentUser.username, 'project_access', `Accessed project: ${permission}`);
-      window.open(url, '_blank');
+      
+      // إضافة معامل الحماية للرابط
+      const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true';
+      window.open(protectedUrl, '_blank');
       return true;
     }
   </script>
