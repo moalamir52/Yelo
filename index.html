@@ -9,7 +9,7 @@
   <title>YELO Dashboard</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-  <script src="js/simple-auth-system.js?v=2025"></script>
+  <script src="js/auth-system-fixed.js?v=2026"></script>
   <script>
     // حماية فورية - منع الوصول بدون مصادقة
     (function() {
@@ -140,11 +140,8 @@
       const protectedUrl = url + (url.includes('?') ? '&' : '?') + 'protected=true&t=' + Date.now();
       console.log('🔗 Final URL with protection:', protectedUrl);
       
-      // حل مؤقت - فتح المشاريع بدون حماية
-      alert('⚠️ حل مؤقت: سيتم فتح المشروع بدون حماية\n\nسيتم إصلاح الحماية قريباً');
-      
-      // فتح المشروع مباشرة بدون معامل الحماية
-      window.open(url, '_blank');
+      // الانتقال للمشروع في نفس النافذة
+      window.location.href = url;
       return true;
     }
   </script>
